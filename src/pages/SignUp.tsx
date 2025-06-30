@@ -18,7 +18,7 @@ const SignUp = () => {
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
         try {
-            await api.post('signup', data);
+            await api.post('/signup', data);
             toast.success("Sign up successfully");
             navigate("/");
         } catch (error: unknown) {

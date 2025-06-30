@@ -27,7 +27,7 @@ const ServerSidebar = () => {
 
     const createServer = async () => {
         try {
-            await api.post("/registered-servers",
+            await api.post("/server",
                 {
                     name: "test",
                     logoUrl: "test2"
