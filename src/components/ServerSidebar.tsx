@@ -1,6 +1,7 @@
 import '../styles/style.css'
 import {useEffect, useState} from "react";
 import api from "../api/axios.ts";
+import PopUp from "../genericComponents/PopUp.tsx";
 
 type Server = {
     name: string,
@@ -10,6 +11,7 @@ type Server = {
 const ServerSidebar = () => {
 
     const [servers, setServers] = useState<Server[]>();
+    const [isServerCreationDialogOpen, setIsServerCreationDialogOpen] = useState(false);
 
     useEffect(() => {
         fetchServers().then(null);
@@ -41,9 +43,20 @@ const ServerSidebar = () => {
     return (
         <aside className={"sidebar"}>
 
-            <button onClick={() => createServer()}>
-
+            <button onClick={() => setIsServerCreationDialogOpen(true)}>
             </button>
+
+            <PopUp visible={isServerCreationDialogOpen} onClose={
+                () => setIsServerCreationDialogOpen(false)}
+            >
+                <div>
+                    <form>
+                        <label>Server Name</label>
+                        <input type={"text"} placeholder={"Server Name"}/>
+                    </form>
+                </div>
+            </PopUp>
+
             {
                 servers &&
                 servers.map((server, index) => (
