@@ -4,18 +4,18 @@ import api from "../api/axios.ts";
 import PopUp from "../genericComponents/PopUp.tsx";
 import {getRegisteredServers} from "../api/server.ts";
 import {useForm} from "react-hook-form";
-import type {CreateServerDto} from "../types/server.ts";
+import type {CreateServerDto, Server} from "../types/server.ts";
 import {toast} from "sonner";
 
-type Server = {
-    name: string,
-    logoUrl: string
+interface ServerSidebarProps {
+    onServerSelected: (server: Server) => void;
 }
 
-const ServerSidebar = () => {
+const ServerSidebar = ({onServerSelected}: ServerSidebarProps) => {
 
     const [servers, setServers] = useState<Server[]>();
     const [isServerCreationDialogOpen, setIsServerCreationDialogOpen] = useState(false);
+    const [selectedServer, setSelectedServer] = useState<number | null>(null);
 
     const {register, handleSubmit, formState: {errors}, reset} = useForm<CreateServerDto>();
 
@@ -104,9 +104,19 @@ const ServerSidebar = () => {
                 servers.map((server, index) => (
                     <div key={index}
                          title={`Server ${index + 1}`}>
-                        <label>
-                            {server.name}
-                        </label>
+                        <button
+                            onClick={() => {
+                                onServerSelected(server);
+                                setSelectedServer(index);
+                            }}
+                            className={"server-icon"}
+                        >
+                            <img
+                                src={server.logoUrl}
+                                alt={server.name}
+                                className={"server-icon img"}
+                            />
+                        </button>
                     </div>
                 ))
             }

@@ -6,6 +6,7 @@ import {useState} from "react";
 function UserScreen() {
 
     const [selectedChannel, setSelectedChannel] = useState('genel');
+    const [selectedServer, setSelectedServer] = useState();
 
     return (
         <div className="main-panel">
