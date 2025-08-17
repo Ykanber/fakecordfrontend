@@ -2,20 +2,14 @@ import {useNavigate} from "react-router-dom";
 import {type SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import {toast} from "sonner";
-import api from "../api/axios.ts";
-
-
-type FormValues = {
-    username: string,
-    password: string,
-    email: string
-};
+import type {UserLoginDto, UserRegisterDto} from "../types/auth.ts";
+import {loginUser} from "../api/auth.ts";
 
 const Login = () => {
 
     const navigate = useNavigate();
 
-    const {register, handleSubmit} = useForm<FormValues>();
+    const {register, handleSubmit} = useForm<UserRegisterDto>();
 
     const navigateToSignUp = () => {
         navigate("/signup");
@@ -25,10 +19,10 @@ const Login = () => {
         navigate("/profile");
     }
 
-    const onSignIn: SubmitHandler<FormValues> = async (data) => {
+    const onSignIn: SubmitHandler<UserLoginDto> = async (data: UserLoginDto) => {
 
         try {
-            const res = await api.post("/login", data);
+            const res = await loginUser(data);
             toast.success("Logged in");
             console.log(res.data);
             navigateToUserScreen();

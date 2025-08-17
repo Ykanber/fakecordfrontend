@@ -4,30 +4,27 @@ import ReactDOM from "react-dom";
 interface PopUpProps {
     visible: boolean;
     onClose: () => void;
+    overlayClassName?: string;
+    contentClassName?: string;
     children: ReactNode;
 }
 
 
-const PopUp: React.FC<PopUpProps> = ({visible, onClose, children}) => {
+const PopUp: React.FC<PopUpProps> = ({
+                                         visible, onClose, overlayClassName = "", contentClassName = "", children
+                                     }) => {
 
     if (!visible) return null;
 
 
     return ReactDOM.createPortal(
         <div
-            style={{
-                position: "fixed",
-                inset: 0,
-                backgroundColor: "rgba(0,0,0,0.5)",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                zIndex: 1000,
-            }}
+            className={`popup-overlay ${overlayClassName}`}
             onClick={onClose}
         >
-            <div style={{background: "white", padding: 20, borderRadius: 8}}
-                 onClick={(e) => e.stopPropagation()}
+            <div
+                className={`popup-content ${contentClassName}`}
+                onClick={(e) => e.stopPropagation()}
             >
                 {children}
             </div>
