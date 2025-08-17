@@ -5,6 +5,7 @@ import PopUp from "../genericComponents/PopUp.tsx";
 import {getRegisteredServers} from "../api/server.ts";
 import {useForm} from "react-hook-form";
 import type {CreateServerDto} from "../types/server.ts";
+import {toast} from "sonner";
 
 type Server = {
     name: string,
@@ -16,7 +17,7 @@ const ServerSidebar = () => {
     const [servers, setServers] = useState<Server[]>();
     const [isServerCreationDialogOpen, setIsServerCreationDialogOpen] = useState(false);
 
-    const {register, handleSubmit, formState: {errors}} = useForm<CreateServerDto>();
+    const {register, handleSubmit, formState: {errors}, reset} = useForm<CreateServerDto>();
 
 
     useEffect(() => {
@@ -39,12 +40,27 @@ const ServerSidebar = () => {
                 {
                     name: data.serverName,
                     logoUrl: data.logoUrl
+                })
+                .then(() => {
+                        setIsServerCreationDialogOpen(false);
+                        toast.success("Server successfully created");
+                    }
+                )
+                .catch(() => {
+                    toast.error("Server cannot be created");
                 });
+
+
             await fetchServers();
         } catch (error: unknown) {
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        if (!isServerCreationDialogOpen)
+            reset();
+    }, [isServerCreationDialogOpen, reset]);
 
     return (
         <aside className={"sidebar"}>
