@@ -2,10 +2,10 @@ import '../styles/style.css'
 import {useEffect, useState} from "react";
 import api from "../api/axios.ts";
 import PopUp from "../genericComponents/PopUp.tsx";
-import {getRegisteredServers} from "../api/server.ts";
 import {useForm} from "react-hook-form";
 import type {CreateServerDto, Server} from "../types/server.ts";
 import {toast} from "sonner";
+import {ServerApi} from "../api/server.ts";
 
 interface ServerSidebarProps {
     onServerSelected: (server: Server) => void;
@@ -26,9 +26,9 @@ const ServerSidebar = ({onServerSelected}: ServerSidebarProps) => {
 
     const fetchServers = async () => {
         try {
-            const res = await getRegisteredServers();
-            setServers(res.data);
-            console.log(res.data);
+            const registeredServers = await ServerApi.getRegisteredServers();
+            setServers(registeredServers);
+            console.log(registeredServers);
         } catch (error: unknown) {
             console.log(error);
         }
