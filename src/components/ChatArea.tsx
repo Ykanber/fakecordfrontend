@@ -1,25 +1,25 @@
-import React, {useState} from "react";
-import type {Message} from "../types/common.ts";
+import React, {useEffect, useState} from "react";
+import type {Channel} from "../types/common.ts";
+import {MessageApi} from "../api/message.ts";
+import type {Message} from "../types/message.ts";
 
 interface Props {
-    selectedChannel: string;
+    selectedChannel: Channel | undefined;
 }
 
 const ChatArea: React.FC<Props> = ({selectedChannel}) => {
 
-    const [messages, setMessages] = useState<Message[]>([
-        {author: 'Yavuz', text: 'Merhaba! Nasılsın?'},
-        {author: 'Ali', text: 'İyiyim, teşekkürler! Sen nasılsın?'}
-    ])
-
     const [input, setInput] = useState('');
+    const [messages, setMessages] = useState<Message[]>([]);
 
     const handleSend = () => {
 
         if (!input.trim) return;
+        MessageApi.sendMessage({
+            channelId: selectedChannel ? selectedChannel.channelId : 1,
+            messageText: input
+        }).then(() => setInput(''))
 
-        setMessages(prevState => [...prevState, {author: "Sen", text: input}]);
-        setInput('');
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -28,18 +28,31 @@ const ChatArea: React.FC<Props> = ({selectedChannel}) => {
         }
     }
 
+    const getChannelMessages = async () => {
+        const messages = await MessageApi.getChannelMessages(1, selectedChannel ? selectedChannel.channelId : 1);
+        if (messages.length !== 0) {
+            setMessages(messages);
+        }
+    }
+
+    useEffect(() => {
+        getChannelMessages().then(null);
+    }, [selectedChannel]);
+
 
     return (
         <main className="chat-window">
             <div className="channel-header-bar">
-                <span className="hash">#</span> {selectedChannel}
+                <span className="hash">#</span> {selectedChannel?.channelName}
             </div>
 
             <div className="messages">
-                {messages.map((msg, idx) => (
+
+                {messages && messages.map((msg, idx) => (
                     <div key={idx} className="message">
                         <div className="message-author">{msg.author}</div>
-                        <div className="message-text">{msg.text}</div>
+                        <div className="message-text">{msg.messageText}</div>
+                        <div className="message-text">{msg.createTime}</div>
                     </div>
                 ))}
             </div>

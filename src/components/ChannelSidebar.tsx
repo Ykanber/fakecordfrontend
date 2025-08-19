@@ -4,9 +4,9 @@ import {ServerApi} from "../api/server.ts";
 import type {Channel} from "../types/common.ts";
 
 interface Props {
-    selectedChannel: Channel
+    selectedChannel: Channel | undefined
     onSelectChannel: (channelName: Channel) => void
-    selectedServer: Server
+    selectedServer: Server | undefined
 }
 
 const ChannelSidebar: React.FC<Props> = ({selectedChannel, onSelectChannel, selectedServer}) => {
@@ -19,7 +19,7 @@ const ChannelSidebar: React.FC<Props> = ({selectedChannel, onSelectChannel, sele
     }
 
     const addChannelButtonOnClick = () => {
-        const response = ServerApi.createMessageChannel({serverId: 1, channelId: 100, channelName: "test"});
+        const response = ServerApi.createMessageChannel({serverId: 1, channelId: 5, channelName: "test"});
         response.then(fetchChannels);
     }
 
