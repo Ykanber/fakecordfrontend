@@ -24,7 +24,6 @@ const Login = () => {
         try {
             const res = await loginUser(data);
             toast.success("Logged in");
-            console.log(res.data);
             navigateToUserScreen();
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response?.status === 401) {

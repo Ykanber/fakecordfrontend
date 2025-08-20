@@ -30,10 +30,6 @@ function UserScreen() {
         setSelectedServer(server);
     };
 
-    useEffect(() => {
-        console.log("ServerDeğişti")
-    }, [selectedServer]);
-
     return (
         <div className="main-panel">
             <ServerSidebar onServerSelected={handleServerSelect} servers={servers}></ServerSidebar>

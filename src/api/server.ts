@@ -11,7 +11,6 @@ export const ServerApi = {
     },
 
     async getServerChannels(serverId: number): Promise<Channel[]> {
-        console.log("serverId", serverId);
         const response = await api.get(`/server/${serverId}/channels`);
         return response.data;
     },

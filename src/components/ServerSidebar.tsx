@@ -15,7 +15,6 @@ const ServerSidebar = ({onServerSelected, servers}: ServerSidebarProps) => {
 
     const [isServerCreationDialogOpen, setIsServerCreationDialogOpen] = useState(false);
     const [selectedServer, setSelectedServer] = useState<number | null>(null);
-    console.log(selectedServer);
     const {register, handleSubmit, formState: {errors}, reset} = useForm<CreateServerDto>();
 
 
