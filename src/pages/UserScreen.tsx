@@ -24,7 +24,7 @@ function UserScreen() {
 
     const fetchChannels = useCallback(async () => {
         if (selectedServer)
-            setChannels(await ServerApi.getServerChannels(1));
+            setChannels(await ServerApi.getServerChannels(selectedServer.serverId));
 
     }, [selectedServer]);
 

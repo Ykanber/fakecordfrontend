@@ -4,6 +4,7 @@ export type CreateServerDto = {
 }
 
 export type Server = {
+    serverId: number,
     name: string,
     logoUrl: string
 }
