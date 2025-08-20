@@ -9,12 +9,12 @@ import {toast} from "sonner";
 interface ServerSidebarProps {
     onServerSelected: (server: Server) => void;
     servers: Server[];
+    selectedServer: Server | undefined;
 }
 
-const ServerSidebar = ({onServerSelected, servers}: ServerSidebarProps) => {
+const ServerSidebar = ({onServerSelected, servers, selectedServer}: ServerSidebarProps) => {
 
     const [isServerCreationDialogOpen, setIsServerCreationDialogOpen] = useState(false);
-    const [selectedServer, setSelectedServer] = useState<number | null>(null);
     const {register, handleSubmit, formState: {errors}, reset} = useForm<CreateServerDto>();
 
 
@@ -83,23 +83,21 @@ const ServerSidebar = ({onServerSelected, servers}: ServerSidebarProps) => {
             {
                 servers &&
                 servers.map((server, index) => (
-                    <div key={index}
-                         title={`Server ${index + 1}`}>
-                        <button
-                            onClick={() => {
-                                onServerSelected(server);
-                                setSelectedServer(index);
-                            }}
-                            className={"server-icon"}
-                        >
-                            <img
-                                src={server.logoUrl}
-                                alt={server.name}
-                                className={"server-icon img"}
-                            />
-                        </button>
+                    <div
+                        key={index}
+                        title={`Server ${index + 1}`}
+                        onClick={() => {
+                            onServerSelected(server);
+                        }}
+                        className={`server-icon ${selectedServer?.name === server.name ? "active" : ""}`}>
+                        <img
+                            src={server.logoUrl}
+                            alt={server.name}
+                            className={"server-icon img"}
+                        />
                     </div>
                 ))
+
             }
         </aside>
     )

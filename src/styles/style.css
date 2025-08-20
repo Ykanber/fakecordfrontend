@@ -72,11 +72,33 @@
 }
 
 .server-icon {
-    width: 48px;
-    height: 48px;
+    width: 60%;
+    aspect-ratio: 1/1;
     background-color: #5865f2;
+    position: relative;
     border-radius: 50%;
+    overflow: hidden;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.server-icon.active {
+    transform: scale(1.3);
+}
+
+.server-icon:hover {
+    background-color: #5865f2;
+    transform: scale(1.1);
+}
+
+.server-icon img {
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .chat-area {

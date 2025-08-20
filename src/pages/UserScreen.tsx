@@ -32,7 +32,8 @@ function UserScreen() {
 
     return (
         <div className="main-panel">
-            <ServerSidebar onServerSelected={handleServerSelect} servers={servers}></ServerSidebar>
+            <ServerSidebar onServerSelected={handleServerSelect} servers={servers}
+                           selectedServer={selectedServer}></ServerSidebar>
             <ChannelSidebar
                 selectedChannel={selectedChannel}
                 onSelectChannel={setSelectedChannel}

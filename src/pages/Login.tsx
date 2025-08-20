@@ -22,7 +22,7 @@ const Login = () => {
     const onSignIn: SubmitHandler<UserLoginDto> = async (data: UserLoginDto) => {
 
         try {
-            const res = await loginUser(data);
+            await loginUser(data);
             toast.success("Logged in");
             navigateToUserScreen();
         } catch (error: unknown) {
