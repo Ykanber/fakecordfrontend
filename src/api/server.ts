@@ -1,6 +1,6 @@
 import api from "./axios.ts";
 import type {Server} from "../types/server.ts";
-import type {Channel} from "../types/common.ts";
+import type {Channel, CreateChannelDto} from "../types/Channel.ts";
 
 
 export const ServerApi = {
@@ -15,7 +15,7 @@ export const ServerApi = {
         return response.data;
     },
 
-    async createMessageChannel(channel: Channel): Promise<void> {
+    async createMessageChannel(channel: CreateChannelDto): Promise<void> {
         const response = await api.post('/server/channel', channel);
         return response.data;
     }

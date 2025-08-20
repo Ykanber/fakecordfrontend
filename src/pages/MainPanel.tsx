@@ -6,7 +6,6 @@ import {Toaster} from "sonner";
 
 const MainPanel = () => {
 
-
     return (
         <BrowserRouter basename={"/fakecordfrontend"}>
             <Toaster position={"top-right"} richColors/>

@@ -1,25 +1,31 @@
 import React from 'react'
 import type {Server} from "../../types/server.ts";
 import {ServerApi} from "../../api/server.ts";
-import type {Channel} from "../../types/common.ts";
+import type {Channel} from "../../types/Channel.ts";
 
 interface Props {
     selectedChannel: Channel | undefined
     onSelectChannel: (channelName: Channel) => void
+    onAddChannel: () => void
     selectedServer: Server
     channels: Channel[]
 }
 
-const ChannelSidebar: React.FC<Props> = ({selectedChannel, onSelectChannel, selectedServer, channels}) => {
+const ChannelSidebar: React.FC<Props> = ({
+                                             selectedChannel,
+                                             onSelectChannel,
+                                             onAddChannel,
+                                             selectedServer,
+                                             channels
+                                         }) => {
 
 
     const addChannelButtonOnClick = () => {
         const res = ServerApi.createMessageChannel({
             serverId: selectedServer.serverId,
-            channelId: 5,
             channelName: "test"
         });
-        res.then(() => onSelectChannel({serverId: selectedServer.serverId, channelId: 5, channelName: "test"}));
+        res.then(() => onAddChannel());
     }
 
     return (
@@ -31,7 +37,7 @@ const ChannelSidebar: React.FC<Props> = ({selectedChannel, onSelectChannel, sele
                         {channels.map((channel, index) => (
                             <li
                                 key={index}
-                                className={`channel-item ${selectedChannel === channel ? "active" : ""}`}
+                                className={`channel-item ${selectedChannel?.channelId === channel.channelId ? "active" : ""}`}
                                 onClick={() => {
                                     onSelectChannel(channel)
                                 }}

@@ -3,10 +3,10 @@ import ChannelSidebar from "./channelArea/ChannelSidebar.tsx";
 import ChatArea from "./chatArea/ChatArea.tsx";
 import {useCallback, useEffect, useState} from "react";
 import type {Server} from "../types/server.ts";
-import type {Channel} from "../types/common.ts";
 import {ServerApi} from "../api/server.ts";
 import {MessageApi} from "../api/message.ts";
 import type {Message} from "../types/message.ts";
+import type {Channel} from "../types/Channel.ts";
 
 function UserScreen() {
 
@@ -20,7 +20,9 @@ function UserScreen() {
         try {
             const registeredServers = await ServerApi.getRegisteredServers();
             setServers(registeredServers);
-            setSelectedServer(registeredServers[0]);
+            console.log(selectedServer);
+            if (!selectedServer)
+                setSelectedServer(registeredServers[0]);
         } catch (error: unknown) {
             console.log(error);
         }
@@ -30,7 +32,11 @@ function UserScreen() {
         if (selectedServer) {
             const channels = await ServerApi.getServerChannels(selectedServer.serverId);
             setChannels(channels);
-            setSelectedChannel(channels[0]);
+            console.log(selectedChannel);
+            if (!selectedChannel) {
+                console.log("selected Channel " + selectedChannel);
+                setSelectedChannel(channels[0]);
+            }
         }
     }, [selectedServer]);
 
@@ -60,15 +66,21 @@ function UserScreen() {
         setSelectedServer(server);
     };
 
+    const handleChannelSelect = useCallback((channel: Channel) => {
+        setSelectedChannel(channel);
+        console.log(selectedChannel);
+    }, [selectedChannel]);
+
     return (
         <div className="main-panel">
             <ServerSidebar onServerSelected={handleServerSelect} servers={servers}
                            selectedServer={selectedServer}></ServerSidebar>
             <ChannelSidebar
                 selectedChannel={selectedChannel}
-                onSelectChannel={setSelectedChannel}
+                onSelectChannel={handleChannelSelect}
                 selectedServer={selectedServer!}
                 channels={channels}
+                onAddChannel={fetchChannels}
             />
             <ChatArea selectedChannel={selectedChannel} messages={messages}></ChatArea>
         </div>
