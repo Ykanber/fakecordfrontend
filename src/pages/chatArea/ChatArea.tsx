@@ -1,5 +1,5 @@
 import React from "react";
-import type {Channel} from "../../types/common.ts";
+import type {Channel} from "../../types/Channel.ts";
 import MessageInput from "./MessageInput.tsx";
 import MessageList from "./MessageList.tsx";
 import type {Message} from "../../types/message.ts";

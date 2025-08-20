@@ -16,14 +16,19 @@ const MessageList: React.FC<Props> = ({selectedChannel, messages}: Props) => {
                 <span className="hash">#</span> {selectedChannel?.channelName}
             </div>
 
-            <div className="messages">
-
-                {messages && messages.map((msg, idx) => (
-                    <div key={idx} className="message">
-                        <div className="message-author">{msg.author}</div>
-                        <div className="message-text">{msg.messageText}</div>
-                        <div className="message-text">{msg.createTime.toString()}</div>
+            <div className="message-list">
+                {messages.map((msg, index) => (
+                    <div key={index} className="message-row">
+                        <div className="avatar">{msg.author[0]}</div>
+                        <div className="message-content">
+                            <div className="message-header">
+                                <span className="author">{msg.author}</span>
+                                <span className="timestamp">{new Date(msg.createTime).toLocaleString()}</span>
+                            </div>
+                            <div className="text">{msg.messageText}</div>
+                        </div>
                     </div>
+
                 ))}
             </div>
         </>

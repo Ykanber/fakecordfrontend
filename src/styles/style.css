@@ -196,7 +196,6 @@
     font-weight: 600;
 }
 
-
 .hash {
     color: #72767d;
     margin-right: 4px;
@@ -221,4 +220,56 @@
     height: 5vh;
     font-size: 1.5rem;
     background-color: #282b30;
+}
+
+
+.chat-window {
+    width: 60%;
+    height: 100%;
+}
+
+.message-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.avatar {
+    width: 4%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background-color: #5865F2; /* Discord blurple color for placeholder */
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+}
+
+.message-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.message-header .author {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.message-header .timestamp {
+    color: #999;
+    font-size: 12px;
+}
+
+.message-content .text {
+    font-size: 14px;
+    line-height: 1.25rem;
+    margin-top: 2px;
 }
