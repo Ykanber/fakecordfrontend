@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import type {Server} from "../types/server.ts";
 import {ServerApi} from "../api/server.ts";
 import type {Channel} from "../types/common.ts";
@@ -7,48 +7,43 @@ interface Props {
     selectedChannel: Channel | undefined
     onSelectChannel: (channelName: Channel) => void
     selectedServer: Server | undefined
+    channels: Channel[]
 }
 
-const ChannelSidebar: React.FC<Props> = ({selectedChannel, onSelectChannel, selectedServer}) => {
+const ChannelSidebar: React.FC<Props> = ({selectedChannel, onSelectChannel, selectedServer, channels}) => {
 
-
-    const [channels, setChannels] = useState<Channel[]>([]);
-
-    const fetchChannels = async () => {
-        setChannels(await ServerApi.getServerChannels(1));
-    }
 
     const addChannelButtonOnClick = () => {
-        const response = ServerApi.createMessageChannel({serverId: 1, channelId: 5, channelName: "test"});
-        response.then(fetchChannels);
+        const res = ServerApi.createMessageChannel({serverId: 1, channelId: 5, channelName: "test"});
+        res.then(() => onSelectChannel({serverId: 1, channelId: 5, channelName: "test"}));
     }
-
-    useEffect(() => {
-        fetchChannels().then(null);
-    }, [selectedChannel, selectedServer]);
-
 
     return (
         <div className="channel-sidebar">
             <div className="channel-header">TEXT CHANNELS</div>
-            <ul className="channel-list">
-                {channels.map((channel, index) => (
-                    <li
-                        key={index}
-                        className={`channel-item ${selectedChannel === channel ? "active" : ""}`}
-                        onClick={() => {
-                            onSelectChannel(channel)
-                        }}
+            {selectedServer &&
+                <>
+                    <ul className="channel-list">
+                        {channels.map((channel, index) => (
+                            <li
+                                key={index}
+                                className={`channel-item ${selectedChannel === channel ? "active" : ""}`}
+                                onClick={() => {
+                                    onSelectChannel(channel)
+                                }}
+                            >
+                                <span className="hash">#</span> {channel.channelName}
+                            </li>
+                        ))}
+                    </ul>
+
+                    <button
+                        onClick={addChannelButtonOnClick}
                     >
-                        <span className="hash">#</span> {channel.channelName}
-                    </li>
-                ))}
-            </ul>
-            <button
-                onClick={addChannelButtonOnClick}
-            >
-                +
-            </button>
+                        +
+                    </button>
+                </>
+            }
         </div>
     )
 }

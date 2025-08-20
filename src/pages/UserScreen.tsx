@@ -1,7 +1,7 @@
 import ServerSidebar from "../components/ServerSidebar.tsx";
 import ChannelSidebar from "../components/ChannelSidebar.tsx";
 import ChatArea from "./chatArea/ChatArea.tsx";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import type {Server} from "../types/server.ts";
 import type {Channel} from "../types/common.ts";
 import {ServerApi} from "../api/server.ts";
@@ -11,6 +11,7 @@ function UserScreen() {
     const [selectedChannel, setSelectedChannel] = useState<Channel>();
     const [selectedServer, setSelectedServer] = useState<Server>();
     const [servers, setServers] = useState<Server[]>([]);
+    const [channels, setChannels] = useState<Channel[]>([]);
 
     const fetchServers = async () => {
         try {
@@ -21,9 +22,16 @@ function UserScreen() {
         }
     }
 
+    const fetchChannels = useCallback(async () => {
+        if (selectedServer)
+            setChannels(await ServerApi.getServerChannels(1));
+
+    }, [selectedServer]);
+
     useEffect(() => {
         fetchServers().then(null);
-    }, []);
+        fetchChannels().then(null);
+    }, [fetchChannels]);
 
 
     const handleServerSelect = (server: Server) => {
@@ -38,6 +46,7 @@ function UserScreen() {
                 selectedChannel={selectedChannel}
                 onSelectChannel={setSelectedChannel}
                 selectedServer={selectedServer}
+                channels={channels}
             />
             <ChatArea selectedChannel={selectedChannel}></ChatArea>
         </div>
