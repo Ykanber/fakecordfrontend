@@ -5,34 +5,19 @@ import PopUp from "../genericComponents/PopUp.tsx";
 import {useForm} from "react-hook-form";
 import type {CreateServerDto, Server} from "../types/server.ts";
 import {toast} from "sonner";
-import {ServerApi} from "../api/server.ts";
 
 interface ServerSidebarProps {
     onServerSelected: (server: Server) => void;
+    servers: Server[];
 }
 
-const ServerSidebar = ({onServerSelected}: ServerSidebarProps) => {
+const ServerSidebar = ({onServerSelected, servers}: ServerSidebarProps) => {
 
-    const [servers, setServers] = useState<Server[]>();
     const [isServerCreationDialogOpen, setIsServerCreationDialogOpen] = useState(false);
     const [selectedServer, setSelectedServer] = useState<number | null>(null);
     console.log(selectedServer);
     const {register, handleSubmit, formState: {errors}, reset} = useForm<CreateServerDto>();
 
-
-    useEffect(() => {
-        fetchServers().then(null);
-    }, []);
-
-    const fetchServers = async () => {
-        try {
-            const registeredServers = await ServerApi.getRegisteredServers();
-            setServers(registeredServers);
-            console.log(registeredServers);
-        } catch (error: unknown) {
-            console.log(error);
-        }
-    }
 
     const createServer = async (data: CreateServerDto) => {
         try {
@@ -49,9 +34,6 @@ const ServerSidebar = ({onServerSelected}: ServerSidebarProps) => {
                 .catch(() => {
                     toast.error("Server cannot be created");
                 });
-
-
-            await fetchServers();
         } catch (error: unknown) {
             console.log(error);
         }
