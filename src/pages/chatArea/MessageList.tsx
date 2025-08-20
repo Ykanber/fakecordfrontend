@@ -12,15 +12,17 @@ const MessageList: React.FC<Props> = ({selectedChannel}: Props) => {
     const [messages, setMessages] = useState<Message[]>([]);
 
     const getChannelMessages = useCallback(async () => {
-        const messages = await MessageApi.getChannelMessages(1, selectedChannel ? selectedChannel.channelId : 1);
-        if (messages.length !== 0) {
-            setMessages(messages);
+        if (selectedChannel) {
+            const messages = await MessageApi.getChannelMessages(1, selectedChannel?.channelId);
+            if (messages.length !== 0) {
+                setMessages(messages);
+            }
         }
     }, [selectedChannel]);
 
     useEffect(() => {
         getChannelMessages().then(null);
-    });
+    }, [getChannelMessages, selectedChannel]);
 
     return (
         <>
