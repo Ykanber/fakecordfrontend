@@ -20,7 +20,6 @@ function UserScreen() {
         try {
             const registeredServers = await ServerApi.getRegisteredServers();
             setServers(registeredServers);
-            console.log(selectedServer);
             if (!selectedServer)
                 setSelectedServer(registeredServers[0]);
         } catch (error: unknown) {
@@ -32,9 +31,7 @@ function UserScreen() {
         if (selectedServer) {
             const channels = await ServerApi.getServerChannels(selectedServer.serverId);
             setChannels(channels);
-            console.log(selectedChannel);
             if (!selectedChannel) {
-                console.log("selected Channel " + selectedChannel);
                 setSelectedChannel(channels[0]);
             }
         }
@@ -68,7 +65,6 @@ function UserScreen() {
 
     const handleChannelSelect = useCallback((channel: Channel) => {
         setSelectedChannel(channel);
-        console.log(selectedChannel);
     }, [selectedChannel]);
 
     return (

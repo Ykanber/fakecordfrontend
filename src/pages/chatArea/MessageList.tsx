@@ -1,5 +1,5 @@
 import React from "react";
-import type {Channel} from "../../types/common.ts";
+import type {Channel} from "../../types/Channel.ts";
 import type {Message} from "../../types/message.ts";
 
 interface Props {
