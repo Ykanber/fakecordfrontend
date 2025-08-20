@@ -6,7 +6,7 @@ import type {Channel} from "../../types/common.ts";
 interface Props {
     selectedChannel: Channel | undefined
     onSelectChannel: (channelName: Channel) => void
-    selectedServer: Server | undefined
+    selectedServer: Server
     channels: Channel[]
 }
 
@@ -14,8 +14,12 @@ const ChannelSidebar: React.FC<Props> = ({selectedChannel, onSelectChannel, sele
 
 
     const addChannelButtonOnClick = () => {
-        const res = ServerApi.createMessageChannel({serverId: 1, channelId: 5, channelName: "test"});
-        res.then(() => onSelectChannel({serverId: 1, channelId: 5, channelName: "test"}));
+        const res = ServerApi.createMessageChannel({
+            serverId: selectedServer.serverId,
+            channelId: 5,
+            channelName: "test"
+        });
+        res.then(() => onSelectChannel({serverId: selectedServer.serverId, channelId: 5, channelName: "test"}));
     }
 
     return (

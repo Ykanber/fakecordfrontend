@@ -1,26 +1,14 @@
-import React, {useCallback, useEffect, useState} from "react";
-import type {Message} from "../../types/message.ts";
-import {MessageApi} from "../../api/message.ts";
+import React from "react";
 import type {Channel} from "../../types/common.ts";
+import type {Message} from "../../types/message.ts";
 
 interface Props {
     selectedChannel?: Channel;
+    messages: Message[];
 }
 
-const MessageList: React.FC<Props> = ({selectedChannel}: Props) => {
+const MessageList: React.FC<Props> = ({selectedChannel, messages}: Props) => {
 
-    const [messages, setMessages] = useState<Message[]>([]);
-
-    const getChannelMessages = useCallback(async () => {
-        if (selectedChannel) {
-            const messages = await MessageApi.getChannelMessages(1, selectedChannel?.channelId);
-            setMessages(messages);
-        }
-    }, [selectedChannel]);
-
-    useEffect(() => {
-        getChannelMessages().then(null);
-    }, [getChannelMessages, selectedChannel]);
 
     return (
         <>

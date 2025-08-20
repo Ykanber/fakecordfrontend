@@ -5,6 +5,8 @@ import {useCallback, useEffect, useState} from "react";
 import type {Server} from "../types/server.ts";
 import type {Channel} from "../types/common.ts";
 import {ServerApi} from "../api/server.ts";
+import {MessageApi} from "../api/message.ts";
+import type {Message} from "../types/message.ts";
 
 function UserScreen() {
 
@@ -12,26 +14,46 @@ function UserScreen() {
     const [selectedServer, setSelectedServer] = useState<Server>();
     const [servers, setServers] = useState<Server[]>([]);
     const [channels, setChannels] = useState<Channel[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
 
-    const fetchServers = async () => {
+    const fetchServers = useCallback(async () => {
         try {
             const registeredServers = await ServerApi.getRegisteredServers();
             setServers(registeredServers);
+            setSelectedServer(registeredServers[0]);
         } catch (error: unknown) {
             console.log(error);
         }
-    }
+    }, []);
 
     const fetchChannels = useCallback(async () => {
-        if (selectedServer)
-            setChannels(await ServerApi.getServerChannels(selectedServer.serverId));
-
+        if (selectedServer) {
+            const channels = await ServerApi.getServerChannels(selectedServer.serverId);
+            setChannels(channels);
+            setSelectedChannel(channels[0]);
+        }
     }, [selectedServer]);
+
+
+    const getChannelMessages = useCallback(async () => {
+        if (selectedChannel) {
+            const messages = await MessageApi.getChannelMessages(1, selectedChannel?.channelId);
+            setMessages(messages);
+        }
+    }, [selectedChannel]);
 
     useEffect(() => {
         fetchServers().then(null);
+    }, [fetchServers]);
+
+    useEffect(() => {
         fetchChannels().then(null);
     }, [fetchChannels]);
+
+
+    useEffect(() => {
+        getChannelMessages().then(null);
+    }, [getChannelMessages]);
 
 
     const handleServerSelect = (server: Server) => {
@@ -45,10 +67,10 @@ function UserScreen() {
             <ChannelSidebar
                 selectedChannel={selectedChannel}
                 onSelectChannel={setSelectedChannel}
-                selectedServer={selectedServer}
+                selectedServer={selectedServer!}
                 channels={channels}
             />
-            <ChatArea selectedChannel={selectedChannel}></ChatArea>
+            <ChatArea selectedChannel={selectedChannel} messages={messages}></ChatArea>
         </div>
     )
 }
