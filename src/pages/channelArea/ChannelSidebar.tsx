@@ -1,7 +1,7 @@
 import React from 'react'
-import type {Server} from "../types/server.ts";
-import {ServerApi} from "../api/server.ts";
-import type {Channel} from "../types/common.ts";
+import type {Server} from "../../types/server.ts";
+import {ServerApi} from "../../api/server.ts";
+import type {Channel} from "../../types/common.ts";
 
 interface Props {
     selectedChannel: Channel | undefined

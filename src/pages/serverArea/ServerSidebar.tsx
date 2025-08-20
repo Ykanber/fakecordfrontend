@@ -1,9 +1,9 @@
-import '../styles/style.css'
+import '../../styles/style.css'
 import {useEffect, useState} from "react";
-import api from "../api/axios.ts";
-import PopUp from "../genericComponents/PopUp.tsx";
+import api from "../../api/axios.ts";
+import PopUp from "../../genericComponents/PopUp.tsx";
 import {useForm} from "react-hook-form";
-import type {CreateServerDto, Server} from "../types/server.ts";
+import type {CreateServerDto, Server} from "../../types/server.ts";
 import {toast} from "sonner";
 
 interface ServerSidebarProps {

@@ -1,5 +1,5 @@
-import ServerSidebar from "../components/ServerSidebar.tsx";
-import ChannelSidebar from "../components/ChannelSidebar.tsx";
+import ServerSidebar from "./serverArea/ServerSidebar.tsx";
+import ChannelSidebar from "./channelArea/ChannelSidebar.tsx";
 import ChatArea from "./chatArea/ChatArea.tsx";
 import {useCallback, useEffect, useState} from "react";
 import type {Server} from "../types/server.ts";
